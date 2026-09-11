@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ARTYENTO · Cronograma & Gestión de Eventos</title>
+  
+  <!-- Estilos principales y de impresión -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Sistema de gestión de cronograma, agenda, control financiero y encuestas de satisfacción para eventos, artes y entretenimiento.">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- =========================================================
+         BARRA LATERAL / SIDEBAR (Desktop)
+         ========================================================= -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">A</div>
+        <div class="brand-title">
+          <span class="brand-name" style="-webkit-text-fill-color:#fff;color:#fff;">ARTYENTO</span>
+          <span class="brand-sub" style="color:#94a3b8;">Eventos & Arte</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+
+        <button class="nav-item" data-view="calendar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Calendario
+        </button>
+
+        <button class="nav-item" data-view="week">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M7 14h3M14 14h3M7 18h3"/></svg>
+          Semana
+        </button>
+
+        <button class="nav-item" data-view="events">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Lista de Eventos
+        </button>
+
+        <button class="nav-item" data-view="availability">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          Disponibilidad
+        </button>
+
+        <button class="nav-item" data-view="form" style="margin-top:10px;background:rgba(99,102,241,0.15);color:#818cf8;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          + Nuevo Evento
+        </button>
+      </nav>
+    </aside>
+
+    <!-- =========================================================
+         ÁREA PRINCIPAL DE CONTENIDO
+         ========================================================= -->
+    <div class="main-wrapper">
+
+      <!-- Header Superior (Sticky) -->
+      <header class="top-header">
+        <div class="brand-wrapper">
+          <div class="brand-icon">A</div>
+          <div class="brand-title">
+            <span class="brand-name">ARTYENTO</span>
+            <span class="brand-sub">Eventos & Agenda</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-sm btn-primary" data-goto-view="form">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span class="d-none d-sm-inline">Nuevo Evento</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- =====================================================
+           VISTA 1: DASHBOARD (Panel Principal)
+           ===================================================== -->
+      <section id="view-dashboard" class="view-section active">
+        
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Panel de Control</h1>
+            <p class="section-subtitle">Resumen operativo, financiero y de satisfacción en tiempo real</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-outline btn-sm" data-goto-view="calendar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+              Ver Calendario
+            </button>
+            <button class="btn btn-primary btn-sm" data-goto-view="form">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Nuevo Evento
+            </button>
+          </div>
+        </div>
+
+        <!-- Accesos Rápidos Principales -->
+        <div class="quick-actions-bar">
+          <div class="quick-action-btn" data-goto-view="form">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span>+ Nuevo Evento</span>
+          </div>
+          <div class="quick-action-btn" data-goto-view="calendar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+            <span>Ver Calendario</span>
+          </div>
+          <div class="quick-action-btn" data-goto-view="events">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>
+            <span>Ver Lista Eventos</span>
+          </div>
+          <div class="quick-action-btn" data-goto-view="availability">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Disponibilidad</span>
+          </div>
+        </div>
+
+        <!-- Tarjetas de Métricas Operativas -->
+        <div class="stats-grid">
+          <div class="stat-card stat-blue">
+            <div class="stat-header">
+              <span class="stat-label">Eventos este fin de semana</span>
+              <div class="stat-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dash-eventos-fin-semana">0</div>
+            <div class="stat-sub">Viernes a domingo</div>
+          </div>
+
+          <div class="stat-card stat-indigo">
+            <div class="stat-header">
+              <span class="stat-label">Próximos Eventos</span>
+              <div class="stat-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dash-proximos">0</div>
+            <div class="stat-sub">Próximos 14 días</div>
+          </div>
+
+          <div class="stat-card stat-emerald">
+            <div class="stat-header">
+              <span class="stat-label">Eventos del Mes</span>
+              <div class="stat-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dash-mes">0</div>
+            <div class="stat-sub">Mes en curso</div>
+          </div>
+
+          <div class="stat-card stat-amber">
+            <div class="stat-header">
+              <span class="stat-label">Días Disponibles</span>
+              <div class="stat-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dash-disponibles">0</div>
+            <div class="stat-sub">Fechas libres este mes</div>
+          </div>
+
+          <div class="stat-card stat-rose">
+            <div class="stat-header">
+              <span class="stat-label">Con Saldo Pendiente</span>
+              <div class="stat-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dash-pend-pago">0</div>
+            <div class="stat-sub">Eventos por cobrar</div>
+          </div>
+        </div>
+
+        <!-- Tarjetas Financieras (COP) -->
+        <h2 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--text-main);">
+          Balance Financiero General (Pesos Colombianos)
+        </h2>
+        <div class="finance-grid">
+          <div class="finance-card total-contratado">
+            <div class="finance-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="finance-info">
+              <span class="finance-label">Total Contratado</span>
+              <span class="finance-val" id="dash-total-contratado">$ 0 COP</span>
+            </div>
+          </div>
+
+          <div class="finance-card total-abonado">
+            <div class="finance-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="finance-info">
+              <span class="finance-label">Total Abonado</span>
+              <span class="finance-val" id="dash-total-abonado">$ 0 COP</span>
+            </div>
+          </div>
+
+          <div class="finance-card total-saldo">
+            <div class="finance-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div class="finance-info">
+              <span class="finance-label">Pendiente por Cobrar</span>
+              <span class="finance-val" id="dash-total-pendiente">$ 0 COP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulo de Satisfacción del Cliente & Encuestas -->
+        <div class="satisfaction-dashboard-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <h2 style="font-size:16px;font-weight:800;color:var(--text-main);">
+                Encuestas de Satisfacción de Clientes
+              </h2>
+              <p style="font-size:12.5px;color:var(--text-muted);">
+                Resultados obtenidos a través de los enlaces enviados por WhatsApp
+              </p>
+            </div>
+            <span class="badge badge-success" style="padding:5px 10px;font-size:12px;">
+              WhatsApp Activo
+            </span>
+          </div>
+
+          <div class="satisfaction-stats-row">
+            <div class="sat-mini-stat">
+              <div class="sat-mini-val" id="sat-enviadas">0</div>
+              <div class="sat-mini-lbl">Encuestas Enviadas</div>
+            </div>
+            <div class="sat-mini-stat">
+              <div class="sat-mini-val" id="sat-respondidas">0</div>
+              <div class="sat-mini-lbl">Respondidas</div>
+            </div>
+            <div class="sat-mini-stat">
+              <div class="sat-mini-val" id="sat-promedio">5.0 <span class="star">★</span></div>
+              <div class="sat-mini-lbl">Promedio Satisfacción</div>
+            </div>
+            <div class="sat-mini-stat">
+              <div class="sat-mini-val" id="sat-recomienda">100%</div>
+              <div class="sat-mini-lbl">Nos Recomendarían</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;">
+            <h3 style="font-size:14px;font-weight:700;color:var(--text-main);margin-bottom:8px;">
+              Últimas Evaluaciones de Clientes
+            </h3>
+            <div id="dash-recent-reviews" class="recent-reviews-list">
+              <!-- Se puebla dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =====================================================
+           VISTA 2: CALENDARIO MENSUAL
+           ===================================================== -->
+      <section id="view-calendar" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Calendario de Eventos</h1>
+            <p class="section-subtitle">Visualiza los eventos programados en cada día del mes</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-primary btn-sm" data-goto-view="form">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Nuevo Evento
+            </button>
+          </div>
+        </div>
+
+        <div class="calendar-card">
+          <!-- Controles de navegación del mes -->
+          <div class="calendar-header">
+            <div class="calendar-title-wrap">
+              <span class="calendar-month-label" id="calendar-month-name">Mes Año</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-sm btn-secondary" id="btn-cal-prev" title="Mes Anterior">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="btn btn-sm btn-secondary" id="btn-cal-today">Hoy</button>
+              <button class="btn btn-sm btn-secondary" id="btn-cal-next" title="Mes Siguiente">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Encabezado de los días de la semana -->
+          <div class="calendar-grid-header">
+            <div>Lun</div>
+            <div>Mar</div>
+            <div>Mié</div>
+            <div>Jue</div>
+            <div>Vie</div>
+            <div>Sáb</div>
+            <div>Dom</div>
+          </div>
+
+          <!-- Cuadrícula de Días -->
+          <div class="calendar-days-grid" id="calendar-days-container">
+            <!-- Se renderiza desde calendar.js -->
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:12px;font-size:12px;color:var(--text-muted);justify-content:center;">
+          <span>💡 En celular: Haz toque sobre un día para ver todos sus eventos y agendar.</span>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VISTA 3: EVENTOS POR SEMANA
+           ===================================================== -->
+      <section id="view-week" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Eventos por Semana</h1>
+            <p class="section-subtitle">Consulta la información completa de los eventos de la semana seleccionada</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-primary btn-sm" data-goto-view="form">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Nuevo Evento
+            </button>
+          </div>
+        </div>
+
+        <div class="week-controls">
+          <button class="btn btn-secondary btn-sm" id="btn-week-prev" title="Semana anterior">‹</button>
+          <label class="week-control-field">
+            <span>Año</span>
+            <select id="week-year-select" class="form-control">
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </label>
+          <label class="week-control-field">
+            <span>Semana</span>
+            <input type="number" id="week-number-input" class="form-control" min="1" max="53" step="1">
+          </label>
+          <button class="btn btn-secondary btn-sm" id="btn-week-next" title="Semana siguiente">›</button>
+          <button class="btn btn-outline btn-sm" id="btn-week-current">Semana actual</button>
+        </div>
+        <div class="week-range-label" id="week-range-label"></div>
+        <div class="week-events-list" id="week-events-list"></div>
+      </section>
+
+      <!-- =====================================================
+           VISTA 4: LISTADO DE EVENTOS (Tabla / Cards)
+           ===================================================== -->
+      <section id="view-events" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Listado de Eventos</h1>
+            <p class="section-subtitle">Gestión completa, balances, encuestas y exportación</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-secondary btn-sm" id="btn-export-csv" title="Descargar archivo CSV compatible con Excel">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar CSV
+            </button>
+            <button class="btn btn-secondary btn-sm" id="btn-print-schedule" title="Imprimir Cronograma">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Imprimir
+            </button>
+            <button class="btn btn-primary btn-sm" data-goto-view="form">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Nuevo
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Búsqueda y Filtros -->
+        <div class="filter-bar">
+          <div class="search-input-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="filter-search" class="form-control" placeholder="Buscar por cliente, servicio, dirección o encargado...">
+          </div>
+
+          <div class="filters-group">
+            <input type="month" id="filter-month" class="form-control" title="Filtrar por mes">
+
+            <select id="filter-estado-pago" class="form-control">
+              <option value="">Estado de Pago: Todos</option>
+              <option value="pagado">Pagado</option>
+              <option value="abono_parcial">Abono Parcial</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+
+            <select id="filter-encargado" class="form-control">
+              <option value="">Encargado: Todos</option>
+            </select>
+
+            <button class="btn btn-secondary btn-sm" id="btn-sort-toggle" style="white-space:nowrap;">
+              Fecha: Más antiguos
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span id="events-count-badge" class="badge badge-info" style="font-size:12px;">0 eventos</span>
+        </div>
+
+        <!-- Vista Celular: Tarjetas (Se oculta en Desktop) -->
+        <div class="events-mobile-list" id="events-mobile-list">
+          <!-- Se renderiza desde app.js -->
+        </div>
+
+        <!-- Vista Escritorio: Tabla Completa (Se oculta en Móvil) -->
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Servicio</th>
+                <th>Cliente</th>
+                <th>Dirección</th>
+                <th>Valor</th>
+                <th>Abono</th>
+                <th>Saldo</th>
+                <th>Encargado</th>
+                <th>Estado</th>
+                <th class="col-actions">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="events-table-body">
+              <!-- Se puebla dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VISTA 4: DISPONIBILIDAD DE FECHAS
+           ===================================================== -->
+      <section id="view-availability" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Control de Disponibilidad</h1>
+            <p class="section-subtitle">Consulta rápida de días libres, parciales y ocupados con reserva directa</p>
+          </div>
+          <div class="section-actions">
+            <select id="avail-month-select" class="form-control" style="width:auto;">
+              <option value="0">Enero</option>
+              <option value="1">Febrero</option>
+              <option value="2">Marzo</option>
+              <option value="3">Abril</option>
+              <option value="4">Mayo</option>
+              <option value="5">Junio</option>
+              <option value="6">Julio</option>
+              <option value="7">Agosto</option>
+              <option value="8">Septiembre</option>
+              <option value="9">Octubre</option>
+              <option value="10">Noviembre</option>
+              <option value="11">Diciembre</option>
+            </select>
+            <select id="avail-year-select" class="form-control" style="width:auto;">
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="avail-legend">
+          <div class="legend-item">
+            <span class="legend-dot green"></span>
+            <span>Disponible (0 eventos)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot yellow"></span>
+            <span>Parcialmente ocupado (Franjas horarias libres)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot red"></span>
+            <span>Ocupado (3+ eventos o jornada llena)</span>
+          </div>
+        </div>
+
+        <!-- Rejilla de Disponibilidad -->
+        <div class="availability-grid" id="availability-grid-container">
+          <!-- Se puebla desde calendar.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VISTA 5: FORMULARIO DE REGISTRO / EDICIÓN DE EVENTOS
+           ===================================================== -->
+      <section id="view-form" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title" id="form-view-title">Registrar Nuevo Evento</h1>
+            <p class="section-subtitle">Todos los campos son validados; el saldo se calcula en tiempo real</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-secondary btn-sm" data-goto-view="events">
+              Volver a la Lista
+            </button>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <form id="event-form">
+            <div class="form-grid">
+
+              <!-- Fecha -->
+              <div class="form-group">
+                <label class="form-label" for="form-fecha">
+                  <span>Fecha del Evento</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="date" id="form-fecha" class="form-control" required>
+              </div>
+
+              <!-- Servicio / Descripción -->
+              <div class="form-group">
+                <label class="form-label" for="form-servicio">
+                  <span>Descripción / Servicio</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="text" id="form-servicio" class="form-control" placeholder="Ej: Show de Magia, DJ en Vivo, Animación..." required list="servicios-sugeridos">
+                <datalist id="servicios-sugeridos">
+                  <option value="Plan Elegance">
+                  <option value="Plan Prestige">
+                  <option value="Show de Magia y Efectos Especiales">
+                  <option value="Animación Temática y Taller de Arte">
+                  <option value="Producción de Sonido, Luces y DJ en Vivo">
+                  <option value="Obra Teatral Infantil & Títeres">
+                  <option value="Show de Danza y Malabares con Fuego">
+                  <option value="Show Musical Acústico & Presentación">
+                  <option value="Hora Loca y Comparsa de Entretenimiento">
+                </datalist>
+              </div>
+
+              <!-- Cliente y Contacto -->
+              <div class="form-group">
+                <label class="form-label" for="form-cliente">
+                  <span>Nombre del Cliente / Empresa</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="text" id="form-cliente" class="form-control" placeholder="Ej: Absalón Eventos" required list="clientes-sugeridos">
+                <datalist id="clientes-sugeridos">
+                  <option value="Absalón Eventos">
+                </datalist>
+              </div>
+
+              <!-- Persona de Contacto -->
+              <div class="form-group">
+                <label class="form-label" for="form-contacto">
+                  <span>Persona de Contacto</span>
+                </label>
+                <input type="text" id="form-contacto" class="form-control" placeholder="Ej: Liliana, Edwiin...">
+              </div>
+
+              <!-- Teléfono / Celular (Para WhatsApp) -->
+              <div class="form-group">
+                <label class="form-label" for="form-telefono">
+                  <span>Teléfono / WhatsApp</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="tel" id="form-telefono" class="form-control" placeholder="Ej: +57 3224389761" required>
+              </div>
+
+              <!-- Dirección del Evento -->
+              <div class="form-group">
+                <label class="form-label" for="form-direccion">
+                  <span>Dirección / Lugar del Evento</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="text" id="form-direccion" class="form-control" placeholder="Ej: Hacienda Villa Sofía, Hotel Habitel..." required list="lugares-sugeridos">
+                <datalist id="lugares-sugeridos">
+                  <option value="Hacienda Villa Sofía, Subachoque">
+                  <option value="Hotel Habitel, Bogotá">
+                </datalist>
+              </div>
+
+              <!-- Horarios y Opción por Confirmar -->
+              <div class="form-group col-full" style="margin-bottom:-4px;">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--text-main);">
+                  <input type="checkbox" id="form-hora-tbd" style="width:18px;height:18px;accent-color:var(--color-primary);cursor:pointer;">
+                  <span>Horario por confirmar (Reserva de fecha / Jornada)</span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="form-hora-inicio">
+                  <span>Hora de Inicio</span>
+                  <span class="required" id="req-hora-inicio">*</span>
+                </label>
+                <input type="time" id="form-hora-inicio" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="form-hora-fin">
+                  <span>Hora de Finalización</span>
+                  <span class="required" id="req-hora-fin">*</span>
+                </label>
+                <input type="time" id="form-hora-fin" class="form-control" required>
+              </div>
+
+              <!-- Alerta de Conflicto de Horario (En tiempo real) -->
+              <div class="form-group col-full">
+                <div id="conflict-alert" class="conflict-alert">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span id="conflict-alert-msg">Existe un conflicto de horario con otro evento en esta fecha.</span>
+                </div>
+              </div>
+
+              <!-- Información Financiera -->
+              <div class="form-group">
+                <label class="form-label" for="form-valor">
+                  <span>Valor Total (COP)</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="number" id="form-valor" class="form-control" placeholder="Ej: 1500000" min="0" step="1000" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="form-abono">
+                  <span>Abono Realizado (COP)</span>
+                  <span class="required">*</span>
+                </label>
+                <input type="number" id="form-abono" class="form-control" placeholder="Ej: 500000" min="0" step="1000" value="0" required>
+              </div>
+
+              <!-- Saldo Calculado Automáticamente -->
+              <div class="form-group col-full">
+                <div class="balance-calculation-box">
+                  <div class="balance-formula">Cálculo Automático: Saldo = Valor Total - Abono</div>
+                  <div class="balance-result">
+                    <span style="font-weight:600;color:var(--text-muted);">Saldo Pendiente:</span>
+                    <span class="balance-result-val" id="form-balance-display">$ 0 COP</span>
+                  </div>
+                  <input type="hidden" id="form-saldo" value="0">
+                </div>
+              </div>
+
+              <!-- Encargado -->
+              <div class="form-group">
+                <label class="form-label" for="form-encargado">
+                  <span>Encargado / Responsable</span>
+                </label>
+                <select id="form-encargado" class="form-control">
+                  <option value="">Sin asignar</option>
+                </select>
+                <div class="encargados-editor">
+                  <input type="text" id="nuevo-encargado" class="form-control" placeholder="Nuevo encargado">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-agregar-encargado">Agregar</button>
+                  <button type="button" class="btn btn-outline btn-sm" id="btn-eliminar-encargado" title="Eliminar el encargado seleccionado">Eliminar</button>
+                </div>
+                <small class="form-help">Agrega o elimina nombres del listado. Luego selecciónalos para cada evento.</small>
+              </div>
+
+              <!-- Observaciones -->
+              <div class="form-group col-full">
+                <label class="form-label" for="form-observaciones">
+                  <span>Observaciones y Requerimientos Técnicos</span>
+                </label>
+                <textarea id="form-observaciones" class="form-control" placeholder="Detalles de sonido, iluminación, rider técnico, hora de montaje, etc..."></textarea>
+              </div>
+
+            </div>
+
+            <!-- Botonera del Formulario -->
+            <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;">
+              <button type="button" class="btn btn-secondary" data-goto-view="events">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-form">Guardar Evento</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </div><!-- Fin main-wrapper -->
+
+    <!-- =========================================================
+         BARRA DE NAVEGACIÓN INFERIOR (100% Optimizada para Móvil)
+         ========================================================= -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-btn active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Inicio</span>
+      </button>
+
+      <button class="bottom-nav-btn" data-view="calendar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Calendario</span>
+      </button>
+
+      <button class="bottom-nav-btn" data-view="week">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M7 14h3M14 14h3"/></svg>
+        <span>Semana</span>
+      </button>
+
+      <!-- Botón Central Flotante Táctil para Crear Evento -->
+      <button class="bottom-nav-btn btn-action-center" data-view="form">
+        <div class="action-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <span>Nuevo</span>
+      </button>
+
+      <button class="bottom-nav-btn" data-view="events">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span>Eventos</span>
+      </button>
+
+      <button class="bottom-nav-btn" data-view="availability">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+        <span>Disponib.</span>
+      </button>
+    </nav>
+
+  </div><!-- Fin app-container -->
+
+  <!-- =========================================================
+       MODALES (Estilo Bottom-Sheet en móvil)
+       ========================================================= -->
+
+  <!-- Modal 1: Ficha y Detalles Completos del Evento -->
+  <div id="modal-event-details" class="modal-overlay">
+    <div class="modal-content">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;" id="modal-detail-id">EVT-2026-000</div>
+          <h2 class="modal-title" id="modal-detail-servicio">Detalles del Evento</h2>
+        </div>
+        <button class="btn-close-modal" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="event-detail-grid">
+          
+          <div class="detail-block">
+            <span class="detail-label">Cliente & Contacto</span>
+            <span class="detail-value highlight" id="modal-detail-cliente">-</span>
+            <div style="font-size:13px;color:#334155;margin-top:2px;">
+              <strong>Contacto:</strong> <span id="modal-detail-contacto">-</span> · 
+              <span id="modal-detail-telefono">-</span>
+            </div>
+          </div>
+
+          <div class="detail-block">
+            <span class="detail-label">Fecha y Horario</span>
+            <span class="detail-value" id="modal-detail-fecha">-</span>
+          </div>
+
+          <div class="detail-block">
+            <span class="detail-label">Dirección / Lugar</span>
+            <span class="detail-value" id="modal-detail-direccion">-</span>
+          </div>
+
+          <div class="detail-block">
+            <span class="detail-label">Encargado</span>
+            <span class="detail-value" id="modal-detail-encargado">-</span>
+          </div>
+
+          <!-- Información Financiera -->
+          <div style="background:var(--bg-surface-alt);border-radius:var(--radius-md);padding:12px;margin:4px 0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span class="detail-label">Información Económica</span>
+              <span id="modal-detail-badge-pago" class="badge badge-success">Pagado</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:12.5px;">
+              <div>
+                <div style="color:var(--text-muted);font-size:11px;">Valor:</div>
+                <strong id="modal-detail-valor">$ 0</strong>
+              </div>
+              <div>
+                <div style="color:var(--text-muted);font-size:11px;">Abono:</div>
+                <strong id="modal-detail-abono">$ 0</strong>
+              </div>
+              <div>
+                <div style="color:var(--text-muted);font-size:11px;">Saldo:</div>
+                <strong id="modal-detail-saldo" style="color:var(--color-danger);">$ 0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Encuesta de Satisfacción por WhatsApp -->
+          <div class="detail-block">
+            <span class="detail-label">Encuesta de Satisfacción</span>
+            <div id="modal-detail-encuesta-estado" style="margin-top:4px;">
+              <!-- Se puebla dinámicamente -->
+            </div>
+            <div id="modal-detail-encuesta-resultados">
+              <!-- Resultados si fue respondida -->
+            </div>
+          </div>
+
+          <div class="detail-block">
+            <span class="detail-label">Observaciones</span>
+            <span class="detail-value" id="modal-detail-observaciones" style="font-size:13px;white-space:pre-wrap;">-</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer" style="flex-wrap:wrap;">
+        <button class="btn btn-sm btn-whatsapp" id="btn-modal-whatsapp" title="Enviar enlace de satisfacción">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Encuesta WhatsApp
+        </button>
+        <button class="btn btn-sm btn-secondary" id="btn-modal-ver-encuesta" style="display:none;" title="Ver Encuesta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Ver Encuesta
+        </button>
+        <button class="btn btn-sm btn-secondary" id="btn-modal-print">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir Ficha
+        </button>
+        <button class="btn btn-sm btn-outline" id="btn-modal-edit">Editar</button>
+        <button class="btn btn-sm btn-danger" id="btn-modal-delete">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Eventos del Día (Al hacer clic en calendario) -->
+  <div id="modal-day-details" class="modal-overlay">
+    <div class="modal-content">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-day-title">Agenda del Día</h2>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-day-events-list">
+        <!-- Lista de eventos de este día -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-modal-cancel">Cerrar</button>
+        <button class="btn btn-primary" id="btn-modal-day-add">+ Nuevo en esta fecha</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Confirmación de Eliminación -->
+  <div id="modal-confirm-delete" class="modal-overlay">
+    <div class="modal-content" style="max-width:440px;">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <h2 class="modal-title" style="color:var(--color-danger);">Confirmar Eliminación</h2>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">
+          ¿Estás seguro de que deseas eliminar permanentemente este evento? Esta acción no se puede deshacer.
+        </p>
+        <div id="delete-event-info" style="background:#fee2e2;color:#991b1b;padding:12px;border-radius:var(--radius-md);font-weight:700;font-size:13px;">
+          -
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-modal-cancel">Cancelar</button>
+        <button class="btn btn-danger" id="btn-confirm-delete-action">Sí, Eliminar Evento</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Vista Previa WhatsApp antes de abrir wa.me -->
+  <div id="modal-whatsapp-preview" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <h2 class="modal-title" style="color:var(--color-whatsapp);display:flex;align-items:center;gap:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Enviar Encuesta por WhatsApp
+        </h2>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:12px;font-size:13px;">
+          <div><strong>Cliente:</strong> <span id="wa-preview-cliente">-</span></div>
+          <div><strong>Destino:</strong> <span id="wa-preview-telefono">-</span></div>
+        </div>
+
+        <label class="form-label" style="margin-bottom:6px;">Mensaje preparado que se enviará:</label>
+        <div id="wa-preview-text" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:var(--radius-md);padding:12px;font-size:12.5px;white-space:pre-wrap;line-height:1.4;">
+        </div>
+
+        <p style="font-size:11.5px;color:var(--text-muted);margin-top:10px;">
+          Al hacer clic se abrirá WhatsApp con el mensaje listo para que lo revises y envíes con un solo toque.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-modal-cancel">Cancelar</button>
+        <button class="btn btn-whatsapp" id="btn-confirm-open-wa">
+          Abrir en WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor para Notificaciones Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Área Oculta para Impresión de Voucher / Ficha Individual -->
+  <div id="print-voucher-area"></div>
+
+  <!-- Script Principal Autónomo (Funciona tanto en file:// como en servidor web) -->
+  <script src="js/app.js"></script>
+</body>
+</html>

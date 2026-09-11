@@ -1,0 +1,153 @@
+/* ==========================================================================
+   ARTYENTO - Estilos de Impresión Oficiales (A4 / Carta)
+   Optimizado para generar informes impresos y comprobantes de evento
+   ========================================================================== */
+
+@media print {
+  /* Ocultar elementos de interfaz no imprimibles */
+  .top-header,
+  .sidebar,
+  .bottom-nav,
+  .quick-actions-bar,
+  .filter-bar,
+  .section-actions,
+  .btn,
+  .modal-overlay,
+  .toast-container {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+  }
+
+  .main-wrapper {
+    padding: 0 !important;
+  }
+
+  .view-section {
+    display: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Si se imprime el cronograma (Lista de Eventos) */
+  #view-events.print-active,
+  body.print-events #view-events {
+    display: block !important;
+  }
+
+  /* Si se imprime la ficha individual */
+  #print-voucher-area {
+    display: block !important;
+  }
+
+  .print-header {
+    display: block !important;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .print-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .print-brand-title {
+    font-size: 20pt;
+    font-weight: 800;
+  }
+
+  .print-brand-sub {
+    font-size: 10pt;
+    color: #555;
+  }
+
+  .print-meta {
+    text-align: right;
+    font-size: 9pt;
+    color: #555;
+  }
+
+  /* Tabla de eventos para impresión */
+  .table-container {
+    display: block !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .events-mobile-list {
+    display: none !important;
+  }
+
+  .data-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 9pt !important;
+  }
+
+  .data-table th,
+  .data-table td {
+    border: 1px solid #ddd !important;
+    padding: 6px 8px !important;
+  }
+
+  .data-table th {
+    background-color: #f2f2f2 !important;
+    color: #000 !important;
+  }
+
+  /* Ocultar columna de acciones en impresión */
+  .col-actions,
+  .data-table th:last-child,
+  .data-table td:last-child {
+    display: none !important;
+  }
+
+  .badge {
+    border: 1px solid #ccc !important;
+    background: transparent !important;
+    color: #000 !important;
+  }
+
+  /* Comprobante individual de evento */
+  .voucher-box {
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+
+  .voucher-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .voucher-signature-area {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .signature-line {
+    width: 200px;
+    border-top: 1px solid #000;
+    text-align: center;
+    font-size: 9pt;
+    padding-top: 5px;
+  }
+}
+
+/* En pantalla normal, el comprobante imprimible está oculto */
+#print-voucher-area {
+  display: none;
+}
