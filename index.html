@@ -103,6 +103,9 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               + Nuevo Evento
             </button>
+            <button class="btn btn-whatsapp btn-sm" id="btn-general-encuesta" title="Enviar encuesta a varios contactos">
+              Enviar encuesta por WhatsApp
+            </button>
           </div>
         </div>
 
@@ -216,51 +219,6 @@
             <div class="finance-info">
               <span class="finance-label">Pendiente por Cobrar</span>
               <span class="finance-val" id="dash-total-pendiente">$ 0 COP</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Módulo de Satisfacción del Cliente & Encuestas -->
-        <div class="satisfaction-dashboard-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <div>
-              <h2 style="font-size:16px;font-weight:800;color:var(--text-main);">
-                Encuestas de Satisfacción de Clientes
-              </h2>
-              <p style="font-size:12.5px;color:var(--text-muted);">
-                Resultados obtenidos a través de los enlaces enviados por WhatsApp
-              </p>
-            </div>
-            <span class="badge badge-success" style="padding:5px 10px;font-size:12px;">
-              WhatsApp Activo
-            </span>
-          </div>
-
-          <div class="satisfaction-stats-row">
-            <div class="sat-mini-stat">
-              <div class="sat-mini-val" id="sat-enviadas">0</div>
-              <div class="sat-mini-lbl">Encuestas Enviadas</div>
-            </div>
-            <div class="sat-mini-stat">
-              <div class="sat-mini-val" id="sat-respondidas">0</div>
-              <div class="sat-mini-lbl">Respondidas</div>
-            </div>
-            <div class="sat-mini-stat">
-              <div class="sat-mini-val" id="sat-promedio">5.0 <span class="star">★</span></div>
-              <div class="sat-mini-lbl">Promedio Satisfacción</div>
-            </div>
-            <div class="sat-mini-stat">
-              <div class="sat-mini-val" id="sat-recomienda">100%</div>
-              <div class="sat-mini-lbl">Nos Recomendarían</div>
-            </div>
-          </div>
-
-          <div style="margin-top:18px;">
-            <h3 style="font-size:14px;font-weight:700;color:var(--text-main);margin-bottom:8px;">
-              Últimas Evaluaciones de Clientes
-            </h3>
-            <div id="dash-recent-reviews" class="recent-reviews-list">
-              <!-- Se puebla dinámicamente -->
             </div>
           </div>
         </div>
@@ -817,6 +775,9 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
           Encuesta WhatsApp
         </button>
+        <button class="btn btn-sm btn-whatsapp" id="btn-modal-whatsapp-encargado" title="Compartir la ficha completa con el encargado">
+          Compartir ficha al encargado
+        </button>
         <button class="btn btn-sm btn-secondary" id="btn-modal-ver-encuesta" style="display:none;" title="Ver Encuesta">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Ver Encuesta
@@ -902,6 +863,51 @@
         <button class="btn btn-whatsapp" id="btn-confirm-open-wa">
           Abrir en WhatsApp
         </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-whatsapp-encargado" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <h2 class="modal-title" style="color:var(--color-whatsapp);">Compartir ficha al encargado</h2>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="encargado-whatsapp-nombre" style="font-size:13px;color:var(--text-muted);margin-bottom:12px;"></p>
+        <label class="form-label" for="encargado-whatsapp-telefono">WhatsApp del encargado</label>
+        <input type="tel" id="encargado-whatsapp-telefono" class="form-control" placeholder="Ej: +57 300 123 4567">
+        <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--text-muted);">
+          <input type="checkbox" id="encargado-whatsapp-recordar" checked>
+          Recordar este número para este encargado
+        </label>
+        <label class="form-label" style="margin-top:14px;">Ficha que se compartirá</label>
+        <div id="encargado-whatsapp-preview" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:var(--radius-md);padding:12px;font-size:12.5px;white-space:pre-wrap;line-height:1.4;max-height:230px;overflow:auto;"></div>
+        <p style="font-size:11.5px;color:var(--text-muted);margin-top:10px;">Se generará una imagen ordenada con los datos del evento. En computador se descargará para adjuntarla en WhatsApp.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-modal-cancel">Cancelar</button>
+        <button class="btn btn-whatsapp" id="btn-confirm-whatsapp-encargado">Generar y compartir ficha</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-general-encuesta" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="bottom-sheet-pill"></div>
+      <div class="modal-header">
+        <h2 class="modal-title">Enviar encuesta general</h2>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Selecciona uno o varios contactos. Se abrirá WhatsApp con el mismo enlace general para cada uno.</p>
+        <div id="general-encuesta-contactos" style="display:grid;gap:8px;max-height:260px;overflow:auto;"></div>
+        <p id="general-encuesta-vacio" style="display:none;color:var(--color-danger);font-size:13px;">No hay contactos con teléfono registrado.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-modal-cancel">Cancelar</button>
+        <button class="btn btn-whatsapp" id="btn-confirm-general-encuesta">Abrir WhatsApp</button>
       </div>
     </div>
   </div>

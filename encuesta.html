@@ -246,7 +246,7 @@
 
     <!-- Loading State -->
     <div id="survey-loading" class="status-card" style="margin-top:40px;">
-      <p style="font-weight:600;color:var(--text-muted);">Cargando información del evento...</p>
+      <p style="font-weight:600;color:var(--text-muted);">Cargando encuesta...</p>
     </div>
 
     <!-- Error State -->
@@ -256,28 +256,6 @@
       <p id="survey-error-msg" style="color:var(--text-muted);font-size:14px;"></p>
     </div>
 
-    <!-- Already Answered State -->
-    <div id="survey-already-answered" class="status-card" style="display:none;margin-top:30px;">
-      <div class="celebrate-icon">✓</div>
-      <h2 style="font-size:20px;font-weight:800;color:var(--text-main);margin-bottom:8px;">
-        ¡Encuesta ya respondida!
-      </h2>
-      <p style="color:var(--text-muted);font-size:13.5px;margin-bottom:16px;">
-        Esta evaluación ya fue registrada exitosamente con anterioridad.
-      </p>
-
-      <div style="background:var(--bg-surface-alt);border-radius:var(--radius-md);padding:14px;text-align:left;font-size:13px;margin-bottom:16px;">
-        <div><strong>Cliente:</strong> <span id="already-client"></span></div>
-        <div><strong>Servicio:</strong> <span id="already-service"></span></div>
-        <div style="margin-top:6px;"><strong>Calificación:</strong> <span id="already-stars" style="color:#f59e0b;font-size:16px;"></span></div>
-        <div style="margin-top:4px;"><strong>Comentario:</strong> <span id="already-comment" style="font-style:italic;"></span></div>
-      </div>
-
-      <p style="font-size:12px;color:var(--text-muted);">
-        Agradecemos enormemente su tiempo para ayudarnos a brindar siempre el mejor entretenimiento.
-      </p>
-    </div>
-
     <!-- Success State -->
     <div id="survey-success" class="status-card" style="display:none;margin-top:30px;">
       <div class="celebrate-icon">🎉</div>
@@ -285,7 +263,7 @@
         ¡Muchas gracias por tu evaluación!
       </h2>
       <p style="color:var(--text-muted);font-size:14px;line-height:1.5;margin-bottom:20px;">
-        Tus comentarios han sido registrados correctamente en nuestro sistema y nos impulsan a seguir creando experiencias inolvidables en eventos, artes y entretenimiento.
+        Tus respuestas quedaron preparadas en WhatsApp. Envíalas al chat de ARTYENTO para que podamos trabajar con tus comentarios.
       </p>
       <div style="background:var(--color-primary-light);color:var(--color-primary);padding:10px 16px;border-radius:var(--radius-md);font-weight:700;font-size:13px;display:inline-block;">
         ARTYENTO · Eventos & Entretenimiento
@@ -302,25 +280,17 @@
         <p class="survey-desc">Tu opinión nos ayuda a perfeccionar cada detalle de nuestros shows y servicios.</p>
       </div>
 
-      <!-- Resumen del Evento (Solo Lectura) -->
+      <!-- Identificación del contacto -->
       <div class="event-info-box">
-        <div class="event-info-title">Datos del Evento Contratado</div>
+        <div class="event-info-title">Sobre tu experiencia</div>
         <div class="event-info-grid">
           <div class="event-info-item">
-            <span class="event-info-label">Cliente:</span>
-            <span class="event-info-val" id="survey-client-name">-</span>
+            <label class="event-info-label" for="survey-respondent-name">Nombre:</label>
+            <input id="survey-respondent-name" class="form-control" type="text" placeholder="Tu nombre" required>
           </div>
           <div class="event-info-item">
-            <span class="event-info-label">Servicio realizado:</span>
-            <span class="event-info-val" id="survey-service-name">-</span>
-          </div>
-          <div class="event-info-item">
-            <span class="event-info-label">Fecha del evento:</span>
-            <span class="event-info-val" id="survey-event-date">-</span>
-          </div>
-          <div class="event-info-item">
-            <span class="event-info-label">Código:</span>
-            <span class="event-info-val" id="survey-event-code" style="font-family:monospace;">-</span>
+            <label class="event-info-label" for="survey-respondent-contact">Contacto:</label>
+            <input id="survey-respondent-contact" class="form-control" type="text" placeholder="Teléfono o correo (opcional)">
           </div>
         </div>
       </div>

@@ -1695,6 +1695,11 @@
       };
     }
 
+    const btnWaEncargado = document.getElementById('btn-modal-whatsapp-encargado');
+    if (btnWaEncargado) {
+      btnWaEncargado.onclick = () => prepararEnvioWhatsAppEncargado(evento);
+    }
+
     if (btnImprimir) {
       btnImprimir.onclick = () => {
         imprimirFichaEvento(evento);
@@ -1704,7 +1709,7 @@
     if (btnVerEncuesta) {
       btnVerEncuesta.onclick = () => {
         const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-        window.open(`${baseURL}encuesta.html?id=${encodeURIComponent(evento.id)}`, '_blank');
+        window.open(`${baseURL}encuesta.html`, '_blank');
       };
     }
 
@@ -1814,9 +1819,137 @@
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
   }
 
+  function crearFichaEventoImagen(evento) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1400;
+    canvas.height = 1050;
+    const context = canvas.getContext('2d');
+    const margen = 88;
+    const anchoTexto = canvas.width - margen * 2;
+    let y = 0;
+
+    context.fillStyle = '#f6f8fb';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#123047';
+    context.fillRect(0, 0, canvas.width, 220);
+    context.fillStyle = '#ffffff';
+    context.font = '700 52px Arial';
+    context.fillText('ARTYENTO', margen, 88);
+    context.font = '400 25px Arial';
+    context.fillText('Ficha de servicio programado', margen, 135);
+    context.font = '700 24px Arial';
+    context.fillText(evento.id || 'EVENTO', canvas.width - margen - 220, 88);
+    context.font = '400 20px Arial';
+    context.fillText(new Date().toLocaleDateString('es-CO'), canvas.width - margen - 220, 125);
+
+    y = 285;
+    const dibujarSeccion = (titulo, filas) => {
+      context.fillStyle = '#d97706';
+      context.fillRect(margen, y - 32, 8, 34);
+      context.fillStyle = '#123047';
+      context.font = '700 25px Arial';
+      context.fillText(titulo, margen + 24, y - 6);
+      y += 38;
+      filas.forEach(([etiqueta, valor]) => {
+        context.fillStyle = '#64748b';
+        context.font = '700 18px Arial';
+        context.fillText(etiqueta.toUpperCase(), margen + 24, y);
+        context.fillStyle = '#172033';
+        context.font = '400 24px Arial';
+        const texto = String(valor || 'Sin registrar');
+        const palabras = texto.split(' ');
+        let linea = '';
+        const lineas = [];
+        palabras.forEach(palabra => {
+          const candidata = linea ? `${linea} ${palabra}` : palabra;
+          if (context.measureText(candidata).width > anchoTexto - 250 && linea) {
+            lineas.push(linea);
+            linea = palabra;
+          } else {
+            linea = candidata;
+          }
+        });
+        if (linea) lineas.push(linea);
+        lineas.forEach((lineaTexto, indice) => context.fillText(lineaTexto, margen + 250, y + indice * 29));
+        y += Math.max(37, lineas.length * 29 + 8);
+      });
+      y += 25;
+    };
+
+    dibujarSeccion('DETALLES DEL SERVICIO', [
+      ['Servicio', evento.descripcionServicio],
+      ['Cliente', evento.cliente],
+      ['Contacto', `${evento.contacto || 'Sin especificar'} · ${evento.telefono || 'Sin teléfono'}`],
+      ['Fecha y horario', `${formatFecha(evento.fecha) || 'Sin fecha'} · ${formatRangoHorario(evento)}`],
+      ['Lugar', evento.direccion]
+    ]);
+    dibujarSeccion('INFORMACIÓN OPERATIVA', [
+      ['Encargado', evento.encargado],
+      ['Observaciones', evento.observaciones || 'Sin observaciones adicionales']
+    ]);
+    context.fillStyle = '#123047';
+    context.fillRect(margen, 960, canvas.width - margen * 2, 2);
+    context.fillStyle = '#64748b';
+    context.font = '400 18px Arial';
+    context.fillText('Documento interno · ARTYENTO Eventos, Artes & Entretenimiento', margen, 1000);
+    return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  }
+
+  async function prepararEnvioWhatsAppEncargado(evento) {
+    const encargado = (evento.encargado || '').trim();
+    if (!encargado) {
+      showToast('Este evento no tiene un encargado asignado.', 'warning');
+      return;
+    }
+
+    const claveTelefono = `artyento_telefono_encargado_${encargado.toLowerCase()}`;
+    const telefonoInput = document.getElementById('encargado-whatsapp-telefono');
+    const nombreEl = document.getElementById('encargado-whatsapp-nombre');
+    const previewEl = document.getElementById('encargado-whatsapp-preview');
+    const modal = document.getElementById('modal-whatsapp-encargado');
+    const recordarInput = document.getElementById('encargado-whatsapp-recordar');
+    const confirmarBtn = document.getElementById('btn-confirm-whatsapp-encargado');
+    if (!telefonoInput || !previewEl || !modal || !confirmarBtn) return;
+
+    const telefonoGuardado = localStorage.getItem(claveTelefono) || '';
+    if (nombreEl) nombreEl.textContent = `Encargado: ${encargado}`;
+    telefonoInput.value = telefonoGuardado;
+    previewEl.innerHTML = '<strong>Vista previa:</strong><br>Imagen con servicio, cliente, fecha, horario, lugar, encargado y observaciones.';
+    confirmarBtn.onclick = () => {
+      let telefono = telefonoInput.value.replace(/\D/g, '');
+      if (telefono.length === 10 && telefono.startsWith('3')) telefono = `57${telefono}`;
+      if (!telefono) {
+        showToast('Escribe el número de WhatsApp del encargado.', 'warning');
+        telefonoInput.focus();
+        return;
+      }
+      if (recordarInput && recordarInput.checked) localStorage.setItem(claveTelefono, telefono);
+      confirmarBtn.disabled = true;
+      crearFichaEventoImagen(evento).then(async blob => {
+        const nombreArchivo = `ficha_${evento.id || 'evento'}.png`;
+        const archivo = new File([blob], nombreArchivo, { type: 'image/png' });
+        const mensajeCorto = `Hola ${encargado}, te comparto la ficha del evento ${evento.id || ''}.`;
+        closeAllModals();
+        if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+          await navigator.share({ title: `Ficha ${evento.id || 'evento'}`, text: mensajeCorto, files: [archivo] });
+          return;
+        }
+        const enlace = document.createElement('a');
+        enlace.href = URL.createObjectURL(blob);
+        enlace.download = nombreArchivo;
+        enlace.click();
+        window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensajeCorto + ' Adjunta la imagen descargada.')}`, '_blank');
+        showToast('Ficha descargada. Adjunta la imagen en WhatsApp.', 'success');
+      }).catch(() => showToast('No se pudo generar la ficha.', 'error')).finally(() => {
+        confirmarBtn.disabled = false;
+      });
+    };
+    modal.classList.add('active');
+  }
+
   function prepararEnvioWhatsApp(evento) {
     const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-    const encuestaURL = `${baseURL}encuesta.html?id=${encodeURIComponent(evento.id)}`;
+    const encuestaURL = `${baseURL}encuesta.html`;
 
     const nombreSaludo = (evento.contacto || evento.cliente || '').trim();
 
@@ -1847,19 +1980,54 @@ ${encuestaURL}
 
       const btnOpenWA = document.getElementById('btn-confirm-open-wa');
       btnOpenWA.onclick = () => {
-        Store.marcarEncuestaEnviada(evento.id);
-        showToast('Encuesta marcada como enviada.', 'success');
         closeAllModals();
-        renderDashboard();
-        if (AppState.currentView === 'events') renderEventsListView();
         window.open(linkWA, '_blank');
       };
 
       modalWA.classList.add('active');
     } else {
-      Store.marcarEncuestaEnviada(evento.id);
       window.open(linkWA, '_blank');
     }
+  }
+
+  function abrirEnvioEncuestaGeneral() {
+    const modal = document.getElementById('modal-general-encuesta');
+    const lista = document.getElementById('general-encuesta-contactos');
+    const vacio = document.getElementById('general-encuesta-vacio');
+    if (!modal || !lista) return;
+
+    const contactos = Store.getEventos().filter(evento => evento.telefono);
+    lista.innerHTML = contactos.map(evento => `
+      <label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border-color);border-radius:var(--radius-md);">
+        <input type="checkbox" class="general-encuesta-contacto" value="${evento.id}">
+        <span><strong>${evento.contacto || evento.cliente}</strong><br><small>${evento.telefono} · ${evento.cliente}</small></span>
+      </label>
+    `).join('');
+    vacio.style.display = contactos.length ? 'none' : 'block';
+    modal.classList.add('active');
+
+    const btnConfirmar = document.getElementById('btn-confirm-general-encuesta');
+    btnConfirmar.onclick = () => {
+      const seleccionados = [...document.querySelectorAll('.general-encuesta-contacto:checked')]
+        .map(input => contactos.find(evento => evento.id === input.value))
+        .filter(Boolean);
+      if (!seleccionados.length) {
+        showToast('Selecciona al menos un contacto.', 'warning');
+        return;
+      }
+
+      const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      const encuestaURL = `${baseURL}encuesta.html`;
+      seleccionados.forEach((evento, indice) => {
+        const nombre = (evento.contacto || evento.cliente || '').trim();
+        const mensaje = `Hola ${nombre}, nos gustaría conocer tu experiencia con ARTYENTO.\n\nResponde esta encuesta general:\n${encuestaURL}\n\n¡Muchas gracias!`;
+        let telefono = evento.telefono.replace(/\D/g, '');
+        if (telefono.length === 10 && telefono.startsWith('3')) telefono = `57${telefono}`;
+        setTimeout(() => window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank'), indice * 250);
+      });
+      closeAllModals();
+      showToast(`Se prepararon ${seleccionados.length} mensajes de WhatsApp.`, 'success');
+    };
   }
 
   function imprimirCronograma() {
@@ -2072,6 +2240,9 @@ ${encuestaURL}
     if (btnPrintSchedule) {
       btnPrintSchedule.onclick = imprimirCronograma;
     }
+
+    const btnGeneralEncuesta = document.getElementById('btn-general-encuesta');
+    if (btnGeneralEncuesta) btnGeneralEncuesta.onclick = abrirEnvioEncuestaGeneral;
 
     document.querySelectorAll('.btn-close-modal, .btn-modal-cancel').forEach(btn => {
       btn.onclick = closeAllModals;
