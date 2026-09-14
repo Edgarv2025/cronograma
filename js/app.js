@@ -1995,20 +1995,21 @@
     modal.classList.add('active');
   }
 
-  function prepararEnvioWhatsApp(evento) {
-    const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-    const encuestaURL = `${baseURL}encuesta.html`;
+  function crearMensajeEncuesta(nombre, saludo = 'Hola') {
+    return `${saludo} ${nombre}, muchas gracias por confiar en nosotros para su evento.
 
-    const nombreSaludo = (evento.contacto || evento.cliente || '').trim();
+Para conocer su experiencia, por favor responda estas preguntas directamente por este chat:
 
-    const textoMensaje = 
-`Hola ${nombreSaludo}, muchas gracias por confiar en nosotros para su evento de ${evento.descripcionServicio}.
-
-Nos gustaría conocer su experiencia. ¿Podría responder esta breve encuesta de satisfacción?
-
-${encuestaURL}
+1. ¿Qué tan satisfecho está con nuestro servicio? Responda de 1 a 5.
+4. ¿Nos recomendaría a otras personas? Responda Sí o No.
+5. ¿Tiene algún comentario u observación?
 
 ¡Muchas gracias por ayudarnos a mejorar nuestro servicio!`;
+  }
+
+  function prepararEnvioWhatsApp(evento) {
+    const nombreSaludo = (evento.contacto || evento.cliente || '').trim();
+    const textoMensaje = crearMensajeEncuesta(nombreSaludo);
 
     const telefonoLimpio = (evento.telefono || '').replace(/\D/g, '');
     let telefonoWA = telefonoLimpio;
@@ -2064,11 +2065,9 @@ ${encuestaURL}
         return;
       }
 
-      const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-      const encuestaURL = `${baseURL}encuesta.html`;
       seleccionados.forEach((evento, indice) => {
         const nombre = (evento.contacto || evento.cliente || '').trim();
-        const mensaje = `Hola ${nombre}, nos gustaría conocer tu experiencia con ARTYENTO.\n\nResponde esta encuesta general:\n${encuestaURL}\n\n¡Muchas gracias!`;
+        const mensaje = crearMensajeEncuesta(nombre, 'Hola');
         let telefono = evento.telefono.replace(/\D/g, '');
         if (telefono.length === 10 && telefono.startsWith('3')) telefono = `57${telefono}`;
         setTimeout(() => window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank'), indice * 250);

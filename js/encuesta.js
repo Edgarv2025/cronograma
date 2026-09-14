@@ -54,22 +54,6 @@
       '¡Muy satisfecho!'
     ]);
 
-    setupStarRating('atencion', [
-      'Mala atención',
-      'Regular atención',
-      'Buena atención',
-      'Muy buena atención',
-      '¡Excelente atención!'
-    ]);
-
-    setupStarRating('calidad', [
-      'Baja calidad',
-      'Calidad regular',
-      'Buena calidad',
-      'Muy buena calidad',
-      '¡Excelente calidad!'
-    ]);
-
     let recomendariaVal = true;
     const btnRecoSi = document.getElementById('btn-reco-si');
     const btnRecoNo = document.getElementById('btn-reco-no');
@@ -94,14 +78,12 @@
         e.preventDefault();
 
         const satisfaccion = parseInt(document.getElementById('input-val-satisfaccion').value, 10) || 5;
-        const atencion = parseInt(document.getElementById('input-val-atencion').value, 10) || 5;
-        const calidad = parseInt(document.getElementById('input-val-calidad').value, 10) || 5;
         const nombre = document.getElementById('survey-respondent-name').value.trim();
         const contacto = document.getElementById('survey-respondent-contact').value.trim();
         const comentarios = (document.getElementById('survey-comments').value || '').trim();
         if (!nombre) return;
 
-        const textoRespuesta = `Hola ARTYENTO, soy ${nombre}${contacto ? ` (${contacto})` : ''}.\n\nMi evaluación:\n- Satisfacción: ${satisfaccion}/5\n- Atención: ${atencion}/5\n- Calidad: ${calidad}/5\n- Recomendaría: ${recomendariaVal ? 'Sí' : 'No'}\n- Comentarios: ${comentarios || 'Sin comentarios'}`;
+        const textoRespuesta = `Hola ARTYENTO, soy ${nombre}${contacto ? ` (${contacto})` : ''}.\n\nMi evaluación:\n- Satisfacción: ${satisfaccion}/5\n- Recomendaría: ${recomendariaVal ? 'Sí' : 'No'}\n- Comentarios: ${comentarios || 'Sin comentarios'}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(textoRespuesta)}`, '_blank');
 
         if (formEl) formEl.style.display = 'none';
