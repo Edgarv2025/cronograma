@@ -532,7 +532,13 @@
                   <span>Teléfono / WhatsApp</span>
                   <span class="required">*</span>
                 </label>
-                <input type="tel" id="form-telefono" class="form-control" placeholder="Ej: +57 3224389761" required>
+                <div class="contact-picker-row">
+                  <input type="tel" id="form-telefono" class="form-control" placeholder="Ej: +57 3224389761" required>
+                  <button type="button" class="btn btn-outline btn-sm contact-picker-btn" id="btn-seleccionar-telefono" title="Tomar un número de los contactos del celular">
+                    Contactos
+                  </button>
+                </div>
+                <small class="form-help">También puedes elegirlo de los contactos guardados en el celular.</small>
               </div>
 
               <!-- Dirección del Evento -->
@@ -877,7 +883,13 @@
       <div class="modal-body">
         <p id="encargado-whatsapp-nombre" style="font-size:13px;color:var(--text-muted);margin-bottom:12px;"></p>
         <label class="form-label" for="encargado-whatsapp-telefono">WhatsApp del encargado</label>
-        <input type="tel" id="encargado-whatsapp-telefono" class="form-control" placeholder="Ej: +57 300 123 4567">
+        <div class="contact-picker-row">
+          <input type="tel" id="encargado-whatsapp-telefono" class="form-control" placeholder="Ej: +57 300 123 4567">
+          <button type="button" class="btn btn-outline btn-sm contact-picker-btn" id="btn-seleccionar-telefono-encargado" title="Tomar un número de los contactos del celular">
+            Contactos
+          </button>
+        </div>
+        <small class="form-help">Puedes elegir el número desde los contactos del celular.</small>
         <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--text-muted);">
           <input type="checkbox" id="encargado-whatsapp-recordar" checked>
           Recordar este número para este encargado

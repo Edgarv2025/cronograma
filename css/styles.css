@@ -870,6 +870,21 @@ html, body {
   cursor: not-allowed;
 }
 
+.contact-picker-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.contact-picker-row .form-control {
+  min-width: 0;
+}
+
+.contact-picker-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 textarea.form-control {
   resize: vertical;
   min-height: 85px;

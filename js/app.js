@@ -47,6 +47,54 @@
     }).format(fecha);
   }
 
+  async function seleccionarContactoTelefono({ telefonoInput, nombreInput = null }) {
+    if (!navigator.contacts || typeof navigator.contacts.select !== 'function') {
+      showToast('La selección de contactos no está disponible en este navegador. Escribe el número manualmente.', 'warning');
+      return;
+    }
+
+    try {
+      const contactos = await navigator.contacts.select(['name', 'tel'], { multiple: false });
+      const contacto = contactos && contactos[0];
+      const telefono = contacto && Array.isArray(contacto.tel) ? contacto.tel[0] : '';
+      if (!telefono) {
+        showToast('El contacto seleccionado no tiene un número telefónico.', 'warning');
+        return;
+      }
+
+      telefonoInput.value = telefono;
+      if (nombreInput && !nombreInput.value.trim() && contacto.name) {
+        nombreInput.value = Array.isArray(contacto.name) ? contacto.name[0] : contacto.name;
+      }
+      telefonoInput.dispatchEvent(new Event('input', { bubbles: true }));
+      showToast('Contacto seleccionado.', 'success');
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        showToast('No se pudo acceder a los contactos. Escribe el número manualmente.', 'warning');
+      }
+    }
+  }
+
+  function inicializarSelectorContactos() {
+    const telefonoEvento = document.getElementById('form-telefono');
+    const nombreEvento = document.getElementById('form-contacto');
+    const botonEvento = document.getElementById('btn-seleccionar-telefono');
+    if (botonEvento && telefonoEvento) {
+      botonEvento.onclick = () => seleccionarContactoTelefono({
+        telefonoInput: telefonoEvento,
+        nombreInput: nombreEvento
+      });
+    }
+
+    const telefonoEncargado = document.getElementById('encargado-whatsapp-telefono');
+    const botonEncargado = document.getElementById('btn-seleccionar-telefono-encargado');
+    if (botonEncargado && telefonoEncargado) {
+      botonEncargado.onclick = () => seleccionarContactoTelefono({
+        telefonoInput: telefonoEncargado
+      });
+    }
+  }
+
   function formatHora12(hora24) {
     if (!hora24) return '';
     const [h, m] = hora24.split(':').map(Number);
@@ -2271,6 +2319,7 @@ ${encuestaURL}
 
     inicializarEncargados();
     initEventForm();
+    inicializarSelectorContactos();
     switchView('dashboard');
   }
 
